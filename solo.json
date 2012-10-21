@@ -1,0 +1,6 @@
+{
+    "run_list": [
+      "recipe[dspace::default]"
+    ],
+    "user": "dspace"
+}
