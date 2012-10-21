@@ -17,9 +17,24 @@
 # limitations under the License.
 #
 
+include_recipe "tomcat"
+include_recipe "java"
+
 include_recipe "ark::postgresql-connector"
 include_recipe "database::postgresql"
 include_recipe "tomcat::postgresqljar"
+
+version_tag       = "dspace-#{node['dspace']['dspace_version']}"
+source_base_dir   = "/home/dspace/tmp"
+source_dir        = "#{source_base_dir}/#{version_tag}"
+install_dir       = node['dspace']['dspace_home']
+
+# create the dspace db user
+postgresql_database_user node['dspace']['db_username'] do
+  connection postgresql_connection
+  password node['dspace']['db_password']
+  action :create
+end
 
 # define the database connection
 postgresql_connection = ({:host => node['dspace']['db_postgresql_host'], :port => node['dspace']['db_postgresql_port'], :username => node['dspace']['db_username'], :password => node['dspace']['db_password']})
@@ -35,90 +50,55 @@ postgresql_database node['dspace']['db_postgresql_name'] do
   action :create
 end
 
-
-# create the dspace user
-postgresql_database_user node['dspace']['db_username'] do
-  connection postgresql_connection
-  password node['dspace']['db_password']
-  action :create
-end
-
-# grant permissions to locahost
-postgresql_database_user node['dspace']['db_username'] do
-  connection postgresql_connection
-  password node['dspace']['db_password']
-  database_name node['dspace']['db_name']
-  host node['dspace']['postgresql_host']
-  action :grant
-end
-
-# grant permissions
-postgresql_database_user node['dspace']['db_username'] do
-  connection postgresql_connection
-  password node['dspace']['db_password']
-  database_name node['dspace']['db_name']
-  host node['ipaddress']
-  action :grant
-end
-
 # make the dspace directory
-directory node['dspace']['real_root'] do
+directory node['dspace']['dspace_dir'] do
   owner "#{node['tomcat']['user']}"
-  group "root"
+  group "#{node[:tomcat][:user]}"
   mode "0755"
+  recursive true
   action :create
 end
 
-# ln -s /opt/dspace to /opt/dspace3
-link node['dspace']['root'] do
-  to "#{node['dspace']['real_root']}"
-end
 
-# add link required for tomcat (may not matter but installation fails otherwise)
-link "#{node['tomcat']['base']}/common/lib" do
-  to "classes"
-  owner "#{node['tomcat']['user']}"
-  group "#{node['tomcat']['user']}"
+directory "#{source_base_dir}" do
+  owner 'root'
+  group 'root'
+  mode 0755
+  recursive true
 end
 
 ##Create directory to store install scripts in
-directory "#{node['dspace']['install_tmp']}" do
-  owner "root"
-  group "root"
+directory node['dspace']['install_tmp'] do
+  owner "#{node['tomcat']['user']}"
+  group "#{node[:tomcat][:user]}"
   mode "0755"
   action :create
 end
 
-##get the insall script
-remote_file "#{node['dspace']['install_tmp']}/fcrepo-installer-#{node['dspace']['version']}.jar" do
-  source "http://#{node['dspace']['source_server']}/#{node['dspace']['source_path']}/fcrepo-installer-#{node['dspace']['version']}.jar"
-  mode "0644"
-  checksum "aa1d29752a3b62660f3902fdf2763fdd5e3482265b3df920e84c6b5ce38f687e"
-  action :create_if_missing
+# download dspace source and checkout specific version
+execute "fetch dspace from GitHub" do
+  command "git clone https://github.com/DSpace/DSpace.git #{source_dir} && cd #{source_dir} && git checkout #{version_tag}"
+  not_if { FileTest.exists?(source_dir) }
 end
 
-##get the install.properties from template
-template "#{node['dspace']['install_tmp']}/install.properties" do
-  source "install.properties.#{node['dspace']['version']}.erb"
-  owner "root"
-  group "root"
+##get dspace.cfg from template
+template "#{source_dir}/dspace/config/dspace.cfg" do
+  source "dspace.cfg.#{node['dspace']['version']}.erb"
+  owner "#{node['tomcat']['user']}"
+  group "#{node[:tomcat][:user]}"
   mode 0644
 end
 
 ## install dspace
-execute "install_dspace" do
-  command "java -jar #{node['dspace']['install_tmp']}/fcrepo-installer-#{node['dspace']['version']}.jar #{node['dspace']['install_tmp']}/install.properties"
-  creates "#{node['dspace']['root']}/server/config/dspace.fcfg"
+execute "compile_dspace" do
+  command "cd #{source_dir}/dspace && mvn -Pall -DskipTests=true clean package"
   action :run
 end
-
-##set ownership to tomcat for /opt/dspace/*, restart tomcat, sleep for, required for dspace to create directory for apim file below
-bash "set_tomcat_perms" do
-  user "root"
-  cwd "/tmp"
-  code <<-EOH
-  chown -R #{node['tomcat']['user']} #{node['dspace']['root']}/*
-  service tomcat6 restart
-  EOH
-  not_if "test `stat -c %U #{node['dspace']['root']}/server/config/dspace.fcfg` = tomcat6"
+execute "build_dspace" do
+  command "cd #{source_dir}/dspace/target/#{version_tag}-build.dir && ant fresh_install"
+  action :run
+  notifies :restart, "service[tomcat]"
 end
+
+## TODO: template tomcat/conf/server.xml => server.xml.erb and add the context for dspace modules xmlui, jspui, sword, oai
+
