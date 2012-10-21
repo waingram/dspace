@@ -1,0 +1,292 @@
+dspace.dir = <%= node['dspace']['dspace_dir'] %>
+dspace.hostname = <%= node['dspace']['dspace_hostname'] %>
+dspace.baseUrl = <%= node['dspace']['dspace_baseUrl'] %>
+dspace.url = <%= node['dspace']['dspace_url'] %>
+dspace.oai.url = <%= node['dspace']['dspace_baseUrl'] %>/oai
+dspace.name = <%= node['dspace']['dspace_name'] %>
+db.name = <%= node['dspace']['db_name'] %>
+db.url = <%= node['dspace']['db_url'] %>
+db.driver = <%= node['dspace']['db_driver'] %>
+db.username = <%= node['dspace']['db_username'] %>
+db.password = <%= node['dspace']['db_password'] %>
+db.maxconnections = 30
+db.maxwait = 5000
+db.maxidle = -1
+db.statementpool = true
+mail.server=<%= node['dspace']['mail_server'] %>
+mail.from.address = <%= node['dspace']['mail_from_address'] %>
+feedback.recipient = <%= node['dspace']['feedback_recipient'] %>
+mail.admin = <%= node['dspace']['mail_admin'] %>
+mail.access-restrict.enable = true
+mail.server.disabled = <%= node['dspace']['mail_server_disabled'] %>
+default.language = en_US
+assetstore.dir = <%= node['dspace']['dspace_dir'] %>/assetstore
+log.init.config = <%= node['dspace']['dspace_dir'] %>/config/log4j.properties
+log.dir = <%= node['dspace']['dspace_dir'] %>/log
+search.dir = <%= node['dspace']['dspace_dir'] %>/search
+search.operator = OR
+search.maxfieldlength = 10000
+search.index.1 = author:dc.contributor.*
+search.index.2 = author:dc.creator.*
+search.index.3 = title:dc.title.*
+search.index.4 = keyword:dc.subject.*
+search.index.5 = abstract:dc.description.abstract
+search.index.6 = author:dc.description.statementofresponsibility
+search.index.7 = series:dc.relation.ispartof
+search.index.8 = abstract:dc.description.tableofcontents
+search.index.9 = mime:dc.format.mimetype
+search.index.10 = sponsor:dc.description.sponsorship
+search.index.10 = identifier:dc.identifier.*
+search.index.11 = language:dc.language.*
+search.index.12 = type:dc.type.*
+search.index.13 = date:dc.date.issued
+search.index.14 = title:dc.relation.ispartof
+handle.canonical.prefix = http://hdl.handle.net/
+handle.prefix = <%= node['dspace']['handle_prefix'] %>
+handle.dir = <%= node['dspace']['dspace_dir'] %>/handle-server
+plugin.sequence.org.dspace.authenticate.AuthenticationMethod = <%= node['dspace']['authentication_method'] %>
+authentication.shib.email-header = MAIL
+authentication.shib.firstname-header = SHIB-EP-GIVENNAME
+authentication.shib.lastname-header = SHIB-EP-SURNAME
+authentication.shib.email-use-tomcat-remote-user = false
+authentication.shib.autoregister = true
+authentication.shib.role-header.ignore-scope = false
+authentication.shib.role.Senior\ Researcher = Researcher, Staff
+authentication.shib.role.Librarian = Administrator
+ldap.enable = false
+webui.ldap.autoregister = true
+filter.plugins = PDF Text Extractor, HTML Text Extractor, OO2PDF, OO2CSV \
+                                 Word Text Extractor, JPEG Thumbnail
+plugin.named.org.dspace.app.mediafilter.FormatFilter = \
+  org.dspace.app.mediafilter.PDFFilter = PDF Text Extractor, \
+  org.dspace.app.mediafilter.HTMLFilter = HTML Text Extractor, \
+  org.dspace.app.mediafilter.WordFilter = Word Text Extractor, \
+  org.dspace.app.mediafilter.JPEGFilter = JPEG Thumbnail, \
+  org.dspace.app.mediafilter.BrandedPreviewJPEGFilter = Branded Preview JPEG
+filter.org.dspace.app.mediafilter.PDFFilter.inputFormats = Adobe PDF
+filter.org.dspace.app.mediafilter.HTMLFilter.inputFormats = HTML, Text
+filter.org.dspace.app.mediafilter.WordFilter.inputFormats = Microsoft Word
+filter.org.dspace.app.mediafilter.JPEGFilter.inputFormats = BMP, GIF, JPEG, image/png
+filter.org.dspace.app.mediafilter.BrandedPreviewJPEGFilter.inputFormats = BMP, GIF, JPEG, image/png
+pdffilter.largepdfs = true
+pdffilter.skiponmemoryexception = true
+crosswalk.mods.properties.MODS = crosswalks/mods.properties
+crosswalk.mods.properties.mods = crosswalks/mods.properties
+crosswalk.submission.MODS.stylesheet= crosswalks/mods-submission.xsl
+crosswalk.qdc.namespace.QDC.dc = http://purl.org/dc/elements/1.1/
+crosswalk.qdc.namespace.QDC.dcterms = http://purl.org/dc/terms/
+crosswalk.qdc.schemaLocation.QDC  = \
+  http://purl.org/dc/terms/ http://dublincore.org/schemas/xmls/qdc/2006/01/06/dcterms.xsd \
+  http://purl.org/dc/elements/1.1/ http://dublincore.org/schemas/xmls/qdc/2006/01/06/dc.xsd
+crosswalk.qdc.properties.QDC = crosswalks/QDC.properties
+crosswalk.qdc.namespace.qdc.dc = http://purl.org/dc/elements/1.1/
+crosswalk.qdc.namespace.qdc.dcterms = http://purl.org/dc/terms/
+crosswalk.qdc.schemaLocation.qdc  = \
+  http://purl.org/dc/terms/ http://dublincore.org/schemas/xmls/qdc/2006/01/06/dcterms.xsd \
+  http://purl.org/dc/elements/1.1/ http://dublincore.org/schemas/xmls/qdc/2006/01/06/dc.xsd
+crosswalk.qdc.properties.qdc = crosswalks/QDC.properties
+mets.submission.crosswalk.DC = QDC
+mets.submission.preserveManifest = false
+mets.submission.useCollectionTemplate = false
+plugin.named.org.dspace.content.crosswalk.IngestionCrosswalk = \
+  org.dspace.content.crosswalk.PREMISCrosswalk = PREMIS \
+  org.dspace.content.crosswalk.OREIngestionCrosswalk = ore \
+  org.dspace.content.crosswalk.NullIngestionCrosswalk = NIL \
+  org.dspace.content.crosswalk.QDCCrosswalk = qdc \
+  org.dspace.content.crosswalk.OAIDCIngestionCrosswalk = dc \
+  org.dspace.content.crosswalk.DIMIngestionCrosswalk = dim
+plugin.selfnamed.org.dspace.content.crosswalk.IngestionCrosswalk = \
+  org.dspace.content.crosswalk.XSLTIngestionCrosswalk
+plugin.named.org.dspace.content.crosswalk.DisseminationCrosswalk = \
+  org.dspace.content.crosswalk.SimpleDCDisseminationCrosswalk = DC \
+  org.dspace.content.crosswalk.SimpleDCDisseminationCrosswalk = dc \
+  org.dspace.content.crosswalk.PREMISCrosswalk = PREMIS \
+  org.dspace.content.crosswalk.METSDisseminationCrosswalk = METS \
+  org.dspace.content.crosswalk.METSDisseminationCrosswalk = mets \
+  org.dspace.content.crosswalk.OREDisseminationCrosswalk = ore \
+  org.dspace.content.crosswalk.QDCCrosswalk = qdc \
+  org.dspace.content.crosswalk.DIMDisseminationCrosswalk = dim \
+  org.dspace.content.crosswalk.METSRightsDisseminationCrosswalk = METSRights
+plugin.selfnamed.org.dspace.content.crosswalk.DisseminationCrosswalk = \
+  org.dspace.content.crosswalk.MODSDisseminationCrosswalk , \
+  org.dspace.content.crosswalk.XSLTDisseminationCrosswalk, \
+  org.dspace.content.crosswalk.QDCCrosswalk, \
+  org.dspace.content.crosswalk.XHTMLHeadDisseminationCrosswalk
+plugin.named.org.dspace.content.packager.PackageDisseminator = \
+  org.dspace.content.packager.DSpaceMETSDisseminator = METS
+plugin.named.org.dspace.content.packager.PackageIngester = \
+  org.dspace.content.packager.PDFPackager  = Adobe PDF, PDF, \
+  org.dspace.content.packager.DSpaceMETSIngester = METS
+event.dispatcher.default.class = org.dspace.event.BasicDispatcher
+event.dispatcher.default.consumers = search, browse, eperson, harvester, authority
+event.dispatcher.noindex.class = org.dspace.event.BasicDispatcher
+event.dispatcher.noindex.consumers = eperson
+event.consumer.search.class = org.dspace.search.SearchConsumer
+event.consumer.search.filters = Community|Collection|Item|Bundle+Add|Create|Modify|Modify_Metadata|Delete|Remove
+event.consumer.browse.class = org.dspace.browse.BrowseConsumer
+event.consumer.browse.filters = Community|Collection|Item|Bundle+Add|Create|Modify|Modify_Metadata|Delete|Remove
+event.consumer.eperson.class = org.dspace.eperson.EPersonConsumer
+event.consumer.eperson.filters = EPerson+Create
+event.consumer.harvester.class = org.dspace.harvest.HarvestConsumer
+event.consumer.harvester.filters = Item+Delete
+event.consumer.authority.class = org.dspace.content.authority.AuthorityConsumer
+event.consumer.authority.filters = Item+Modify|Modify_Metadata
+embargo.field.terms = SCHEMA.ELEMENT.QUALIFIER
+embargo.field.lift = SCHEMA.ELEMENT.QUALIFIER
+embargo.terms.open = forever
+plugin.single.org.dspace.embargo.EmbargoSetter = org.dspace.embargo.DefaultEmbargoSetter
+plugin.single.org.dspace.embargo.EmbargoLifter = org.dspace.embargo.DefaultEmbargoLifter
+plugin.single.org.dspace.checker.BitstreamDispatcher=org.dspace.checker.SimpleDispatcher
+checker.retention.default=10y
+checker.retention.CHECKSUM_MATCH=8w
+org.dspace.app.itemexport.work.dir = <%= node['dspace']['dspace_dir'] %>/exports
+org.dspace.app.itemexport.download.dir = <%= node['dspace']['dspace_dir'] %>/exports/download
+org.dspace.app.itemexport.life.span.hours = 48
+org.dspace.app.itemexport.max.size = 200
+metadata.hide.dc.description.provenance = true
+webui.submit.blocktheses = false
+webui.submit.enable-cc = false
+webui.browse.thumbnail.show = false
+webui.item.thumbnail.show = true
+thumbnail.maxwidth  80
+thumbnail.maxheight 80
+webui.preview.enabled = false
+webui.preview.maxwidth = 600
+webui.preview.maxheight = 600
+webui.preview.brand = My Institution Name
+webui.preview.brand.abbrev = MyOrg
+webui.preview.brand.height = 20
+webui.preview.brand.font = SansSerif
+webui.preview.brand.fontpoint = 12
+webui.strengths.show = false
+webui.strengths.cache = false
+webui.browse.index.1 = dateissued:item:dateissued
+webui.browse.index.2 = author:metadata:dc.contributor.*,dc.creator:text
+webui.browse.index.3 = title:item:title
+webui.browse.index.4 = subject:metadata:dc.subject.*:text
+webui.browse.index.5 = periodical:item:periodical:desc
+webui.browse.index.6 = series:metadata:dc.relation.ispartof:text
+webui.itemlist.sort-option.1 = title:dc.title:title
+webui.itemlist.sort-option.2 = dateissued:dc.date.issued:date
+webui.itemlist.sort-option.3 = dateaccessioned:dc.date.accessioned:date
+webui.itemlist.sort-option.4 = periodical:mods.part.typeIssue:periodical:hide
+plugin.named.org.dspace.sort.OrderFormatDelegate= \
+        org.dspace.sort.OrderFormatTitleMarc21=title
+webui.browse.link.1 = author:dc.contributor.*
+recent.submissions.sort-option = dateaccessioned
+recent.submissions.count = 5
+plugin.sequence.org.dspace.plugin.CommunityHomeProcessor = \
+        org.dspace.app.webui.components.RecentCommunitySubmissions
+plugin.sequence.org.dspace.plugin.CollectionHomeProcessor = \
+        org.dspace.app.webui.components.RecentCollectionSubmissions
+plugin.named.org.dspace.content.license.LicenseArgumentFormatter = \
+  org.dspace.content.license.SimpleDSpaceObjectLicenseFormatter = collection, \
+  org.dspace.content.license.SimpleDSpaceObjectLicenseFormatter = item, \
+  org.dspace.content.license.SimpleDSpaceObjectLicenseFormatter = eperson
+webui.feed.enable = true
+webui.feed.items = 4
+webui.feed.cache.size = 100
+webui.feed.cache.age = 48
+webui.feed.formats = rss_1.0,rss_2.0,atom_1.0
+webui.feed.localresolve = false
+webui.feed.item.title = dc.title
+webui.feed.item.date = dc.date.issued
+webui.feed.item.description = dc.title, dc.contributor.author, \
+                                                          dc.contributor.editor, dc.description.abstract, \
+                                                          dc.description
+webui.feed.item.author = dc.contributor.author
+websvc.opensearch.enable = false
+websvc.opensearch.uicontext = simple-search
+websvc.opensearch.svccontext = open-search/
+websvc.opensearch.autolink = true
+websvc.opensearch.validity = 48
+websvc.opensearch.shortname = DSpace
+websvc.opensearch.longname = <%= node['dspace']['dspace_name'] %>
+websvc.opensearch.description = <%= node['dspace']['dspace_name'] %> DSpace repository
+websvc.opensearch.faviconurl = http://www.dspace.org/images/favicon.ico
+websvc.opensearch.samplequery = photosynthesis
+websvc.opensearch.tags = IR DSpace
+websvc.opensearch.formats = html,atom,rss
+webui.content_disposition_threshold = 8388608
+xmlui.content_disposition_threshold = 8388608
+sitemap.dir = <%= node['dspace']['dspace_dir'] %>/sitemaps
+sitemap.engineurls = http://www.google.com/webmasters/sitemaps/ping?sitemap=
+authority.minconfidence = ambiguous
+upload.temp.dir = <%= node['dspace']['dspace_dir'] %>/upload
+upload.max = 536870912
+report.public = false
+report.dir = <%= node['dspace']['dspace_dir'] %>/reports/
+webui.licence_bundle.show = false
+plugin.single.org.dspace.app.webui.util.StyleSelection = \
+                       org.dspace.app.webui.util.CollectionStyleSelection
+                       #org.dspace.app.webui.util.MetadataStyleSelection
+default.locale = en
+itemmap.author.index = author
+webui.suggest.enable = false
+xmlui.google.analytics.key=<%= node['dspace']['xmlui_google_analytics_key'] %>
+oai.mets.hide-provenance = true
+mets.submission.crosswalk.EPDCX = SWORD
+crosswalk.submission.SWORD.stylesheet = crosswalks/sword-swap-ingest.xsl
+sword.updated.field = dc.date.updated
+sword.slug.field = dc.identifier.slug
+sword.accept-packaging.METSDSpaceSIP.identifier = http://purl.org/net/sword-types/METSDSpaceSIP
+sword.accept-packaging.METSDSpaceSIP.q = 1.0
+sword.accepts = application/zip
+sword.expose-items = false
+sword.expose-communities = false
+sword.max-upload-size = 0
+sword.keep-original-package = true
+sword.identify-version = true
+sword.on-behalf-of.enable = true
+plugin.named.org.dspace.sword.SWORDIngester = \
+  org.dspace.sword.SWORDMETSIngester = http://purl.org/net/sword-types/METSDSpaceSIP \
+  org.dspace.sword.SimpleFileIngester = SimpleFileIngester
+harvester.oai.metadataformats.dc = http://www.openarchives.org/OAI/2.0/oai_dc/, Simple Dublin Core
+harvester.oai.metadataformats.qdc = http://purl.org/dc/terms/, Qualified Dublin Core
+harvester.oai.metadataformats.dim = http://www.dspace.org/xmlns/dspace/dim, DSpace Intermediate Metadata
+harvester.autoStart=false
+harvester.unknownField  = add
+harvester.unknownSchema = fail
+solr.log.server = <%= node['dspace']['solr_log.server'] %>
+solr.dbfile = <%= node['dspace']['dspace_dir'] %>/config/GeoLiteCity.dat
+statistics.item.authorization.admin=false
+solr.spiderips.urls = http://iplists.com/google.txt, \
+                      http://iplists.com/inktomi.txt, \
+                      http://iplists.com/lycos.txt, \
+                      http://iplists.com/infoseek.txt, \
+                      http://iplists.com/altavista.txt, \
+                      http://iplists.com/excite.txt, \
+                      http://iplists.com/misc.txt, \
+                      http://iplists.com/non_engines.txt
+statistics.default.start.datepick = 01/01/2000
+search.index.bitstreaminfo=true
+plugin.single.org.dspace.app.xmlui.objectmanager.ItemAdapterReportingPlugin = com.atmire.plugins.ReportingSuitePlugin
+event.consumer.statistics.class = org.dspace.statistics.StatisticsConsumer
+event.consumer.statistics.filters = Community|Collection|Item|Bitstream+Add|Modify_Metadata|Delete|Remove|Modify
+solr.statsxml = <%= node['dspace']['dspace_dir'] %>/config/Statistics.xml
+statistics.items.dc.1=dc.type
+statistics.items.dc.2=dc.language.iso
+statistics.items.dc.3=dc.date.accessioned
+statistics.items.type.1=dcinput
+statistics.items.type.2=dcinput
+statistics.items.type.3=date
+statistics.items.startyear=1985
+search.index.13 = issuedate:dc.date.issued
+search.index.14 = accessioneddate:dc.date.accessioned:timestamp
+solr.authority.server=<%= node['dspace']['solr_authority_server'] %>
+plugin.named.org.dspace.content.authority.ChoiceAuthority = \
+org.dspace.content.authority.SolrAuthority = SolrAuthorityType
+authority.discoveryIndexes=dc.creator, dc.contributor, dc.subject, dc.publisher
+authority.controlled.solr.search.limit=10
+choices.plugin.dc.creator = SolrAuthorityType
+choices.presentation.dc.creator = suggest
+authority.controlled.dc.creator = true
+choices.plugin.dc.contributor = SolrAuthorityType
+choices.presentation.dc.contributor = suggest
+authority.controlled.dc.contributor = true
+choices.plugin.dc.subject = SolrAuthorityType
+choices.presentation.dc.subject = suggest
+authority.controlled.dc.subject = true
+choices.plugin.dc.publisher = SolrAuthorityType
+choices.presentation.dc.publisher = suggest
+authority.controlled.dc.publisher = true
